@@ -1,7 +1,7 @@
 v1.0
 项目开发采用四层架构：
-view-->视图层  访问comtroller层
-comtroller-->控制层  接收前端的输入，并将调用service层
+view-->视图层  访问controller层
+controller-->控制层  接收前端的输入，并将调用service层
 service-->业务逻辑层  处理业务逻辑并调用dao层
 dao-->持久层 操作数据库  框架：Mybatis（mybatis-generator插件）
 
@@ -14,3 +14,11 @@ vo-->view object(value object) 显示在视图层
 pojo-->跟数据库相关的实体类-->vo
 common-->常量枚举
 utils-->工具类
+
+搭建ssm框架：1.pom.xml中添加依赖
+           2.编辑Spring配置文件
+           3.编辑SpringMVC配置文件
+           4.编辑MyBatis配置文件
+           5.配置Web.xml文件
+
+ md5+salt(盐值)

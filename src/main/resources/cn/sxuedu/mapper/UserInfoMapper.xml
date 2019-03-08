@@ -35,8 +35,8 @@
       update_time)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
+      now())
   </insert>
   <insert id="insertSelective" parameterType="cn.sxuedu.pojo.UserInfo">
     insert into sxuedu_user
@@ -151,4 +151,73 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateBySelectedActive" parameterType="cn.sxuedu.pojo.UserInfo">
+    update sxuedu_user
+    <set>
+
+      <if test="password!=null">
+        password=#{password},
+      </if>
+      <if test="email!=null">
+        email=#{email},
+      </if>
+      <if test="question!=null">
+        question=#{question},
+      </if>
+      <if test="answer!=null">
+        answer=#{answer},
+      </if>
+      <if test="phone!=null">
+        phone=#{phone},
+      </if>
+    </set>
+    where id=#{id}
+
+
+  </update>
+  
+  <select id="checkUsername" parameterType="string" resultType="int">
+
+    select count(1) from sxuedu_user where username=#{username}
+  </select>
+
+  <select id="checkEmail" parameterType="string" resultType="int">
+
+    select count(1) from sxuedu_user where email=#{email}
+  </select>
+  
+  <select id="selectLogin" parameterType="map" resultMap="BaseResultMap">
+
+    select id, username, password, email, phone, question, answer, role, create_time, update_time
+    from sxuedu_user where username=#{username} and password=#{password}
+  </select>
+  
+  <select id="selectQuestionByUsername" parameterType="string" resultType="string">
+
+    select question from sxuedu_user where username=#{username}
+  </select>
+
+  <select id="check_forget_answer" parameterType="map" resultType="int">
+
+    select count(1) from sxuedu_user where username=#{username} and  question=#{question} and answer=#{answer}
+  </select>
+  
+  <update id="updatePasswordByUsername" parameterType="map">
+
+    update sxuedu_user set password=#{password},update_time=now() where username=#{username}
+
+  </update>
+
+  <select id="selectCountByUserIdAndPasswordOld" resultType="int" parameterType="map">
+
+    select  count(1)from sxuedu_user where id=#{userId} and password=#{password}
+
+  </select>
+  
+  <select id="checkEmailByUseridAndEmail" parameterType="map" resultType="int">
+    select count(1) from sxuedu_user where id!=#{userId} and email=#{newEmail}
+
+  </select>
+
 </mapper>
