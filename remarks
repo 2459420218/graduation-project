@@ -22,3 +22,17 @@ utils-->工具类
            5.配置Web.xml文件
 
  md5+salt(盐值)
+
+ Mybatis-PageHelper  --分页组件，可以动态排序
+ ssm中集成Mybatis-PageHelper
+        1.Pom.xml加载依赖
+        2.spring配置文件中修改SqlSessionFactoryBean
+        3.在项目中使用分页插件
+
+  类别模块：使用递归查询
+            1.查询父类
+            2.查询子类List
+            3.查询子类的子类
+            ......
+
+   joda-time处理时间的插件

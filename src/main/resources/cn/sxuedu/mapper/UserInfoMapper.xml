@@ -220,4 +220,11 @@
 
   </select>
 
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    id, username, password, email, phone, question, answer, role, create_time, update_time
+    from sxuedu_user
+
+  </select>
+
 </mapper>

@@ -7,9 +7,12 @@ import cn.sxuedu.pojo.UserInfo;
 import cn.sxuedu.service.IUserService;
 import cn.sxuedu.utils.GuavaCacheUtil;
 import cn.sxuedu.utils.MD5Utils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -251,6 +254,29 @@ public class UserServiceImpl implements IUserService {
         }
 
 
+    }
+
+
+    //查询用户列表
+    @Override
+    public ServerResponse selectUserByPageNo(int pageNo, int pageSize) {
+        //此处会先执行查询select count(1) from table
+        PageHelper.startPage(pageNo,pageSize);
+        List<UserInfo> userInfoList=userInfoMapper.selectAll();
+
+        //分页模型
+        PageInfo pageInfo=new PageInfo(userInfoList);
+        return ServerResponse.createBySuccess("成功",pageInfo);
+    }
+
+    //判断 是否为管理员
+    @Override
+    public ServerResponse checkUserAdmin(UserInfo userInfo) {
+        if (userInfo.getRole().intValue()==Const.USERROLE.ADMINUSER){
+
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.creatByError();
     }
 
 

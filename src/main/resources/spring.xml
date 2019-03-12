@@ -25,6 +25,19 @@
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
         <property name="mapperLocations" value="classpath:cn/sxuedu/mapper/*Mapper.xml" ></property>
         <property name="dataSource" ref="dataSource"></property>
+
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
     </bean>
 
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">

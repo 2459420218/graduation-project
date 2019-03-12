@@ -1,11 +1,13 @@
 package cn.sxuedu.controller.backend;
 
 import cn.sxuedu.common.Const;
+import cn.sxuedu.common.ResponseCode;
 import cn.sxuedu.common.ServerResponse;
 import cn.sxuedu.pojo.UserInfo;
 import cn.sxuedu.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -27,10 +29,35 @@ public class UserManageController {
             //防止纵向越权
             //普通用户，没有权限登录后台管理系统
             return ServerResponse.creatByError("普通用户无法访问后台");
+        }else {
+            session.setAttribute(Const.CURRENT_USER,userInfo);
+        }
+        return serverResponse;
+    }
+
+    /**
+     * 分页获取用户
+     * */
+    @RequestMapping(value = "/list.do")
+    public ServerResponse findUserByPageNo(@RequestParam(required = false,defaultValue = "1") int pageNo,
+                                           @RequestParam(required = false,defaultValue = "10") int pageSize,
+                                            HttpSession session){
+
+        //判断用户是否登录
+        UserInfo userInfo=(UserInfo) session.getAttribute(Const.CURRENT_USER);
+        if (userInfo==null){
+            //未登录或登录过期
+            return ServerResponse.creatByError(ResponseCode.NEED_LOGIN.getDesc());
+        }
+        //判断是否为管理员
+        ServerResponse serverResponse=userService.checkUserAdmin(userInfo);
+        if (serverResponse.isSuccess()){
+            //管理员
+            return userService.selectUserByPageNo(pageNo,pageSize);
+        }else {
+            return ServerResponse.creatByError("不是管理员，没有权限");
         }
 
-
-        return serverResponse;
-
     }
+
 }

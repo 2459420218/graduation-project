@@ -3,6 +3,8 @@ package cn.sxuedu.dao;
 import cn.sxuedu.pojo.UserInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -11,6 +13,8 @@ public interface UserInfoMapper {
     int insertSelective(UserInfo record);
 
     UserInfo selectByPrimaryKey(Integer id);
+
+    List<UserInfo> selectAll();
 
     int updateByPrimaryKeySelective(UserInfo record);
 
