@@ -33,4 +33,13 @@ public class Const {
         }
     }
 
+
+        public interface Cart{
+        String LIMIT_MUM_SUCCESS="LIMIT_MUM_SUCCESS";
+        String LIMIT_MUM_FALL="LIMIT_MUM_FALL";
+
+        int CHECKED=1;//选中
+            int UNCHECKED=0;//未选中
+
+        }
 }
