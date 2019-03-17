@@ -163,4 +163,24 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="batchInsertOrderItem" parameterType="list">
+    insert into sxuedu_order_item ( user_id, order_no,
+      product_id, product_name, product_image,
+      current_unit_price, quantity, total_price,
+      create_time, update_time)
+    values
+    <foreach collection="list" item="orderItem" open="(" close=")" separator=",">
+    #{orderItem.userId,jdbcType=INTEGER}, #{orderItem.orderNo,jdbcType=BIGINT},
+    #{orderItem.productId,jdbcType=INTEGER}, #{orderItem.productName,jdbcType=VARCHAR}, #{orderItem.productImage,jdbcType=VARCHAR},
+    #{orderItem.currentUnitPrice,jdbcType=DECIMAL}, #{orderItem.quantity,jdbcType=INTEGER}, #{orderItem.totalPrice,jdbcType=DECIMAL},
+    now(),now()
+    </foreach>
+  </insert>
+
+  <select id="selectAllByUserIdAndOrderNo" parameterType="map" resultMap="BaseResultMap">
+    select id, user_id, order_no, product_id, product_name, product_image, current_unit_price,
+    quantity, total_price, create_time, update_time
+    from sxuedu_order_item where order_no=#{orderNo} and user_id=#{userId}
+  </select>
 </mapper>

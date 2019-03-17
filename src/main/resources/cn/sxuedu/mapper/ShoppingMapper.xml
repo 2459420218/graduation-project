@@ -22,7 +22,7 @@
     receiver_district, receiver_address, receiver_zip, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from sxuedu_shopping
     where id = #{id,jdbcType=INTEGER}
@@ -37,7 +37,7 @@
       receiver_city, receiver_district, receiver_address, 
       receiver_zip, create_time, update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR},
       #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
       #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
       #{receiverZip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
@@ -176,4 +176,51 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="add" parameterType="cn.sxuedu.pojo.Shopping" useGeneratedKeys="true" keyProperty="id">
+    insert into sxuedu_shopping (user_id, receiver_name,
+      receiver_phone, receiver_mobile, receiver_province,
+      receiver_city, receiver_district, receiver_address,
+      receiver_zip, create_time, update_time)
+    values ( #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR},
+      #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR},
+      #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR},
+      #{receiverZip,jdbcType=VARCHAR}, now(), now())
+  </insert>
+
+  <delete id="delete" parameterType="map">
+    delete from sxuedu_shopping
+    where id = #{shoppingId} and user_id=#{userId}
+  </delete>
+
+  <update id="update" parameterType="cn.sxuedu.pojo.Shopping">
+    update sxuedu_shopping
+    set receiver_name = #{receiverName},
+      receiver_phone = #{receiverPhone},
+      receiver_mobile = #{receiverMobile},
+      receiver_province = #{receiverProvince},
+      receiver_city = #{receiverCity},
+      receiver_district = #{receiverDistrict},
+      receiver_address = #{receiverAddress},
+      receiver_zip = #{receiverZip},
+      update_time = now()
+      where id=#{id} and user_id=#{userId}
+
+  </update>
+  <select id="selectByIdAndUserId" parameterType="map" resultMap="BaseResultMap">
+    select id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city,
+    receiver_district, receiver_address, receiver_zip, create_time, update_time
+    from sxuedu_shopping
+    where id=#{shoppingId} and user_id=#{userId}
+
+  </select>
+
+  <select id="selectAll" parameterType="int" resultMap="BaseResultMap">
+    select
+    id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city,
+    receiver_district, receiver_address, receiver_zip, create_time, update_time
+    from sxuedu_shopping
+    where user_id = #{userId}
+  </select>
+
 </mapper>

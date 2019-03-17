@@ -1,5 +1,6 @@
 package cn.sxuedu.pojo;
 
+
 import java.util.Date;
 
 public class Shopping {

@@ -36,14 +36,11 @@
   <insert id="insert" parameterType="cn.sxuedu.pojo.Order">
     insert into sxuedu_order (id, user_id, order_no, 
       shipping_id, payment, payment_type, 
-      postage, status, payment_time, 
-      send_time, end_time, close_time, 
+      postage, status,
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, 
       #{shippingId,jdbcType=INTEGER}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
-      #{postage,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, 
-      #{sendTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{postage,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},now(),now())
   </insert>
   <insert id="insertSelective" parameterType="cn.sxuedu.pojo.Order">
     insert into sxuedu_order
@@ -194,8 +191,39 @@
       send_time = #{sendTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
       close_time = #{closeTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findOrderByUseridAndOrderNo" parameterType="map" resultMap="BaseResultMap">
+    select id, user_id, order_no, shipping_id, payment, payment_type, postage, status, payment_time,
+    send_time, end_time, close_time, create_time, update_time
+    from sxuedu_order where user_id=#{userId} and order_no=#{orderNo}
+  </select>
+
+  <select id="selectAllByUserId" parameterType="int" resultMap="BaseResultMap">
+    select id, user_id, order_no, shipping_id, payment, payment_type, postage, status, payment_time,
+    send_time, end_time, close_time, create_time, update_time
+    from sxuedu_order where user_id=#{userId}
+  </select>
+
+  <select id="getOrderByUserIdAndOrderNo" parameterType="map" resultMap="BaseResultMap">
+    select id, user_id, order_no, shipping_id, payment, payment_type, postage, status, payment_time,
+    send_time, end_time, close_time, create_time, update_time
+    from sxuedu_order where user_id=#{userId} and order_no=#{orderNo}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, order_no, shipping_id, payment, payment_type, postage, status, payment_time,
+    send_time, end_time, close_time, create_time, update_time
+    from sxuedu_order
+  </select>
+
+  <select id="selectOrderByOrderNo" parameterType="long" resultMap="BaseResultMap">
+    select id, user_id, order_no, shipping_id, payment, payment_type, postage, status, payment_time,
+    send_time, end_time, close_time, create_time, update_time
+    from sxuedu_order where order_no=#{orderNo}
+  </select>
+
+
 </mapper>
